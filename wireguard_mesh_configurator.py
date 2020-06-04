@@ -300,7 +300,7 @@ def generate_configs(output_path):
 
     # run wireguard update commands
     for peer in pm.peers:
-        up_down = f"ip link add dev {WG} type wireguard; systemctl enable wg-quick@{WG}; wg-quick down {WG}; wg-quick up {WG}"
+        up_down = f"ip link add dev {WG} type wireguard; systemctl enable wg-quick@{WG}; wg-quick down {WG}; systemctl restart wg-quick@{WG}"
         if peer.public_address:
             CMDS.append(f"ssh root@{peer.public_address} '{up_down}'")
         else:
