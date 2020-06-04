@@ -151,19 +151,6 @@ class ProfileManager(object):
         """ Save current profile to a JSON file
         """
 
-        # If profile already exists (file or link), ask the user if
-        # we should overwrite it.
-        if os.path.isfile(profile_path) or os.path.islink(profile_path):
-            if not Avalon.ask('File already exists. Overwrite?', True):
-                Avalon.warning('Aborted saving profile')
-                return 1
-
-        # Abort if profile_path points to a directory
-        if os.path.isdir(profile_path):
-            Avalon.warning('Destination path is a directory')
-            Avalon.warning('Aborted saving profile')
-            return 1
-
         # Finally, write the profile into the destination file
         Avalon.debug_info(f'Writing profile to: {profile_path}')
 
