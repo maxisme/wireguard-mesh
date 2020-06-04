@@ -218,7 +218,7 @@ def add_peer():
             continue
         break
 
-    peer = Peer(address, public_address, PORT, wg.genkey(), keep_alive=True)
+    peer = Peer(address, public_address, PORT, wg.genkey(), keep_alive=True if not public_address else False)
     pm.peers.append(peer)
     print_peer_config(peer)
 
