@@ -143,7 +143,7 @@ class ProfileManager(object):
 
         for p in loaded_profiles['peers']:
             peer = Peer(p['address'], p['public_address'], p['listen_port'], p['private_key'],
-                        keep_alive=p['keep_alive'], alias=p['alias'], description=p['description'])
+                        keep_alive=p['keep_alive'])
             pm.peers.append(peer)
 
     def json_save_profile(self, profile_path):
@@ -275,6 +275,7 @@ def generate_configs(output_path):
 
     CMDS = []
     # Iterate through all peers and generate configuration for each peer
+    peer: Peer
     for peer in pm.peers:
         Avalon.debug_info(f'Generating configuration file for {peer.address}')
         path = f'{output_path}/{peer.address.split("/")[0]}.conf'
@@ -282,10 +283,6 @@ def generate_configs(output_path):
 
             # Write Interface configuration
             config.write('[Interface]\n')
-            if peer.alias:
-                config.write(f'# Alias: {peer.alias}\n')
-            if peer.description:
-                config.write(f'# Description: {peer.description}\n')
             config.write(f'PrivateKey = {peer.private_key}\n')
             if peer.address != '':
                 config.write(f'Address = {peer.address}\n')
@@ -293,24 +290,19 @@ def generate_configs(output_path):
                 config.write(f'ListenPort = {peer.listen_port}\n')
 
             # Write peers' information
+            p: Peer
             for p in pm.peers:
                 if p.address == peer.address:
                     # Skip if peer is self
                     continue
                 config.write('\n[Peer]\n')
                 print(p.private_key)
-                if p.alias:
-                    config.write(f'# Alias: {p.alias}\n')
-                if p.description:
-                    config.write(f'# Description: {p.description}\n')
                 config.write(f'PublicKey = {wg.pubkey(p.private_key)}\n')
                 config.write(f'AllowedIPs = {p.address}\n')
                 if p.public_address != '':
                     config.write(f'Endpoint = {p.public_address}:{p.listen_port}\n')
                 if peer.keep_alive:
                     config.write('PersistentKeepalive = 25\n')
-                if p.preshared_key:
-                    config.write(f'PresharedKey = {p.preshared_key}\n')
         if peer.public_address:
             CMDS = CMDS.append(f"scp {path} root@{peer.public_address}:/etc/wireguard/wg0.conf")
         else:
