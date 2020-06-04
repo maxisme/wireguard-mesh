@@ -294,7 +294,7 @@ def generate_configs(output_path):
                 if peer.keep_alive:
                     config.write('PersistentKeepalive = 25\n')
         if peer.public_address:
-            CMDS.append(f"scp {path} root@{peer.public_address}:/etc/wireguard/{WG}.conf")
+            CMDS.append(["scp", path, f"root@{peer.public_address}:/etc/wireguard/{WG}.conf"])
         else:
             LOCAL_CMDS.append(f"cp {path} /etc/wireguard/{WG}.conf")
 
@@ -302,7 +302,7 @@ def generate_configs(output_path):
     for peer in pm.peers:
         up_down = f"ip link add dev {WG} type wireguard; systemctl enable wg-quick@{WG}; wg-quick down {WG}; systemctl restart wg-quick@{WG}"
         if peer.public_address:
-            CMDS.append(f"ssh root@{peer.public_address} '{up_down}'")
+            CMDS.append(["ssh", f"root@{peer.public_address}"] + [up_down])
         else:
             LOCAL_CMDS.append(up_down)
 
