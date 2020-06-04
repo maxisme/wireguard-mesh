@@ -238,14 +238,6 @@ class ProfileManager(object):
         self.peers = []
 
 
-def print_welcome():
-    """ Print program name and legal information
-    """
-    print(f'WireGuard Mesh Configurator {VERSION}')
-    print('(C) 2018-2019 K4YT3X')
-    print('Licensed under GNU GPL v3')
-
-
 def print_peer_config(peer):
     """ Print the configuration of a specific peer
 
@@ -515,7 +507,6 @@ def main():
         pass
 
     # Begin command interpreting
-    print_welcome()
     pm.json_load_profile(STORE_PATH)
     # Set command completer
     completer = ShellCompleter(COMMANDS)
