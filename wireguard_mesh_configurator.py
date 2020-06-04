@@ -29,7 +29,7 @@ COMMANDS = [
 SUBNET = "/32"
 BASE = "10.0.0."
 WG="wg1"
-PORT="51873"
+PORT="51978"
 
 
 class Utilities:
