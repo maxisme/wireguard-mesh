@@ -441,10 +441,6 @@ def print_help():
         f'\n{Avalon.FM.BD}Commands are not case-sensitive{Avalon.FM.RST}',
         'Interactive  // launch interactive shell',
         'ShowPeers  // show all peer information',
-        'JSONLoadProfile [profile path]  // load profile from profile_path (JSON format)',
-        'JSONSaveProfile [profile path]  // save profile to profile_path (JSON format)',
-        'PickleLoadProfile [profile path]  // load profile from profile_path (Pickle format)',
-        'PickleSaveProfile [profile path]  // save profile to profile_path (Pickle format)',
         'NewProfile  // create new profile',
         'AddPeers  // add a new peer into the current profile',
         'DeletePeer  // delete a peer from the current profile',
@@ -479,14 +475,6 @@ def command_interpreter(commands):
             for peer in pm.peers:
                 print_peer_config(peer)
             result = 0
-        elif commands[1].lower() == 'jsonloadprofile':
-            result = pm.json_load_profile(commands[2])
-        elif commands[1].lower() == 'jsonsaveprofile':
-            result = pm.json_save_profile(commands[2])
-        elif commands[1].lower() == 'pickleloadprofile':
-            result = pm.pickle_load_profile(commands[2])
-        elif commands[1].lower() == 'picklesaveprofile':
-            result = pm.pickle_save_profile(commands[2])
         elif commands[1].lower() == 'newprofile':
             result = pm.new_profile()
         elif commands[1].lower() == 'addpeer':
@@ -527,32 +515,16 @@ def main():
         pass
 
     # Begin command interpreting
-    try:
-        if sys.argv[1].lower() == 'interactive' or sys.argv[1].lower() == 'int':
-            print_welcome()
-            pm.json_load_profile(STORE_PATH)
-            # Set command completer
-            completer = ShellCompleter(COMMANDS)
-            readline.set_completer(completer.complete)
-            readline.parse_and_bind('tab: complete')
-            # Launch interactive trojan shell
-            prompt = f'{Avalon.FM.BD}[WGC]> {Avalon.FM.RST}'
-            while True:
-                command_interpreter([''] + input(prompt).split(' '))
-        else:
-            # Return to shell with command return value
-            exit(command_interpreter(sys.argv[0:]))
-    except IndexError:
-        Avalon.warning('No commands specified')
-        print_help()
-        exit(0)
-    except (KeyboardInterrupt, EOFError):
-        Avalon.warning('Exiting')
-        exit(0)
-    except Exception:
-        Avalon.error('Exception caught')
-        traceback.print_exc()
-        exit(1)
+    print_welcome()
+    pm.json_load_profile(STORE_PATH)
+    # Set command completer
+    completer = ShellCompleter(COMMANDS)
+    readline.set_completer(completer.complete)
+    readline.parse_and_bind('tab: complete')
+    # Launch interactive trojan shell
+    prompt = f'{Avalon.FM.BD}[WGC]> {Avalon.FM.RST}'
+    while True:
+        command_interpreter([''] + input(prompt).split(' '))
 
 
 if __name__ == '__main__':
