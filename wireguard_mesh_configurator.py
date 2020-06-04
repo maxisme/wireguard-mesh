@@ -28,6 +28,7 @@ COMMANDS = [
 ]
 SUBNET = "/32"
 BASE = "10.0.0."
+WG="wg1"
 
 
 class Utilities:
@@ -274,6 +275,7 @@ def generate_configs(output_path):
             return 1
 
     CMDS = []
+    LOCAL_CMDS = []
     # Iterate through all peers and generate configuration for each peer
     peer: Peer
     for peer in pm.peers:
@@ -304,17 +306,17 @@ def generate_configs(output_path):
                 if peer.keep_alive:
                     config.write('PersistentKeepalive = 25\n')
         if peer.public_address:
-            CMDS = CMDS.append(f"scp {path} root@{peer.public_address}:/etc/wireguard/wg0.conf")
+            CMDS = CMDS.append(f"scp {path} root@{peer.public_address}:/etc/wireguard/{WG}.conf")
         else:
-            CMDS = CMDS.append(f"cp {path} /etc/wireguard/wg0.conf")
+            LOCAL_CMDS = LOCAL_CMDS.append(f"cp {path} /etc/wireguard/{WG}.conf")
 
     # run wireguard update commands
     for peer in pm.peers:
-        up_down = "wg-quick down wg0; wg-quick up wg0"
+        up_down = f"systemctl enable wg-quick@{WG}; wg-quick down {WG}; wg-quick up {WG}"
         if peer.public_address:
             CMDS = CMDS.append(f"ssh root@{peer.public_address} '{up_down}'")
         else:
-            CMDS = CMDS.append(up_down)
+            LOCAL_CMDS = LOCAL_CMDS.append(up_down)
 
     for cmd in CMDS:
         print(f"Running: {cmd}")
@@ -322,6 +324,11 @@ def generate_configs(output_path):
         stdout, stderr = out.communicate()
         print(stdout)
         print(stderr)
+
+    if LOCAL_CMDS:
+        print("Run these commands locally:")
+        for cmd in LOCAL_CMDS:
+            print(cmd)
     pm.json_save_profile(STORE_PATH)
 
 
