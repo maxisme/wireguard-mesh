@@ -311,10 +311,7 @@ def generate_configs(output_path):
         print(f"Running: {cmd}")
         out = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         stdout, stderr = out.communicate()
-        if stderr:
-            print(stderr)
-            print(stdout)
-            quit(0)
+        print(stdout)
 
     if LOCAL_CMDS:
         print("\n\nRun these commands locally:")
