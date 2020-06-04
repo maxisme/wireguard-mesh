@@ -299,7 +299,7 @@ def generate_configs(output_path):
 
     # run wireguard update commands
     for peer in pm.peers:
-        up_down = f"systemctl enable wg-quick@{WG}; wg-quick down {WG}; wg-quick up {WG}"
+        up_down = f"wg-quick up {WG}; systemctl enable wg-quick@{WG}; wg-quick down {WG}; wg-quick up {WG}"
         if peer.public_address:
             CMDS.append(f"ssh root@{peer.public_address} '{up_down}'")
         else:
@@ -313,7 +313,6 @@ def generate_configs(output_path):
             print(stderr)
             print(stdout)
             quit(0)
-
 
     if LOCAL_CMDS:
         print("\n\nRun these commands locally:")
