@@ -29,6 +29,7 @@ COMMANDS = [
 SUBNET = "/32"
 BASE = "10.0.0."
 WG="wg1"
+PORT="51873"
 
 
 class Utilities:
@@ -217,7 +218,7 @@ def add_peer():
             continue
         break
 
-    peer = Peer(address, public_address, "51872", wg.genkey(), keep_alive=True)
+    peer = Peer(address, public_address, PORT, wg.genkey(), keep_alive=True)
     pm.peers.append(peer)
     print_peer_config(peer)
 
