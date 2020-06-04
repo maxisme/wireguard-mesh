@@ -29,7 +29,7 @@ COMMANDS = [
 SUBNET = "/32"
 BASE = "10.0.0."
 WG="wg1"
-PORT="52978"
+PORT="51978"
 
 
 class Utilities:
@@ -300,7 +300,7 @@ def generate_configs(output_path):
 
     # run wireguard update commands
     for peer in pm.peers:
-        up_down = [f"systemctl enable wg-quick@{WG}", f"wg-quick down {WG}", f"wg-quick up {WG}"]
+        up_down = [f"ip link add dev {WG} type wireguard", f"wg-quick down {WG}", f"wg-quick up {WG}", f"systemctl enable wg-quick@{WG}"]
         if peer.public_address:
             for cmd in up_down:
                 CMDS.append(["ssh", f"root@{peer.public_address}"] + [cmd])
