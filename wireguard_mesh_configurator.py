@@ -309,14 +309,19 @@ def generate_configs(output_path):
         print(f"Running: {cmd}")
         out = subprocess.Popen(cmd.split(" "), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         stdout, stderr = out.communicate()
-        print(stdout)
-        print(stderr)
+        if stderr:
+            print(stderr)
+            print(stdout)
+            quit(0)
+
 
     if LOCAL_CMDS:
-        print("Run these commands locally:")
+        print("\n\nRun these commands locally:")
         for cmd in LOCAL_CMDS:
             print(cmd)
+        print("\n\n")
     pm.json_save_profile(STORE_PATH)
+    exit(0)
 
 
 def print_help():
