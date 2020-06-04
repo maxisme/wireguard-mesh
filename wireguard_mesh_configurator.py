@@ -324,14 +324,10 @@ def print_help():
     """
     help_lines = [
         f'\n{Avalon.FM.BD}Commands are not case-sensitive{Avalon.FM.RST}',
-        'Interactive  // launch interactive shell',
-        'ShowPeers  // show all peer information',
-        'NewProfile  // create new profile',
-        'AddPeers  // add a new peer into the current profile',
-        'DeletePeer  // delete a peer from the current profile',
-        'GenerateConfigs [output directory]  // generate configuration files',
-        'Exit',
-        'Quit',
+        'show',
+        'add',
+        'delete',
+        'save',
         '',
     ]
     for line in help_lines:
