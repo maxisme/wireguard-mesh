@@ -307,7 +307,7 @@ def generate_configs(output_path):
             LOCAL_CMDS.append(up_down)
 
     for cmd in CMDS:
-        print(f"Running: {cmd}")
+        print(f"Running: {''.join(c[0] for c in cmd)}")
         out = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         stdout, stderr = out.communicate()
         print(stdout)
