@@ -304,7 +304,7 @@ def generate_configs(output_path):
             for cmd in up_down:
                 CMDS.append(["ssh", f"root@{peer.public_address}"] + [cmd])
         else:
-            LOCAL_CMDS.append(up_down)
+            LOCAL_CMDS.extend(up_down)
 
     for cmd in CMDS:
         print(f"Running: {' '.join(cmd)}")
@@ -314,12 +314,7 @@ def generate_configs(output_path):
 
     if LOCAL_CMDS:
         print("\n\nRun these commands locally:")
-        print(LOCAL_CMDS)
-        for c in LOCAL_CMDS:
-            if isinstance(c, list):
-                print(c[0])
-            else:
-                print(c)
+        print('; '.join(c for c in LOCAL_CMDS))
         print("\n\n")
     pm.json_save_profile(STORE_PATH)
     exit(0)
