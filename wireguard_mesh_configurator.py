@@ -18,7 +18,6 @@ import readline
 import subprocess
 import sys
 
-VERSION = '1.2.0'
 STORE_PATH = '/wg.json'
 COMMANDS = [
     'show',
@@ -315,8 +314,7 @@ def generate_configs(output_path):
 
     if LOCAL_CMDS:
         print("\n\nRun these commands locally:")
-        for cmd in LOCAL_CMDS:
-            print(cmd)
+        print('; '.join(LOCAL_CMDS))
         print("\n\n")
     pm.json_save_profile(STORE_PATH)
     exit(0)
