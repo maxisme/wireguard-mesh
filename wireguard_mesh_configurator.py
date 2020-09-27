@@ -314,6 +314,7 @@ def generate_configs(output_path):
 
     if LOCAL_CMDS:
         print("\n\nRun these commands locally:")
+        print(LOCAL_CMDS)
         for c in LOCAL_CMDS:
             if isinstance(c, list):
                 print(c[0])
