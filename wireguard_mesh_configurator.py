@@ -307,14 +307,14 @@ def generate_configs(output_path):
             LOCAL_CMDS.append(up_down)
 
     for cmd in CMDS:
-        print(f"Running: {''.join(c[0] for c in cmd)}")
+        print(f"Running: {''.join(cmd)}")
         out = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         stdout, stderr = out.communicate()
         print(stdout)
 
     if LOCAL_CMDS:
         print("\n\nRun these commands locally:")
-        print('; '.join(LOCAL_CMDS))
+        print('; '.join(c[0] for c in LOCAL_CMDS))
         print("\n\n")
     pm.json_save_profile(STORE_PATH)
     exit(0)
