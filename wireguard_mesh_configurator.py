@@ -310,7 +310,7 @@ def generate_configs(output_path):
         print(f"Running: {' '.join(cmd)}")
         out = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         stdout, stderr = out.communicate()
-        if len(stderr) > 0:
+        if stderr:
             print("--------------error--------------")
             print(stderr)
         print(stdout)
